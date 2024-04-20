@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const poppins = Poppins({ subsets:["latin"],weight:"400" });
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children,test }) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.js")
   },[])
