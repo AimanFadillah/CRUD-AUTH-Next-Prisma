@@ -1,3 +1,9 @@
+"use client"
+
+import { Suspense } from "react";
+
 export default function Dashboard () {
-    return <h1>Ini Dashboard</h1>
+    return <Suspense fallback={<h1>Loading</h1>} >
+        <h1>Ini Dashboard</h1>
+    </Suspense>
 }
