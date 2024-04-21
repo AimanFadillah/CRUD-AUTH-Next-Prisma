@@ -1,3 +1,9 @@
-export function GET (request){
-    return Response.json({barang:"jeruk",jumlah:"12"})
+import { PrismaClient } from "@prisma/client"
+
+export async function GET (request){
+    const prisma = new PrismaClient()
+
+    const barang = await prisma.barang.findMany();
+
+    return Response.json(barang)
 }
