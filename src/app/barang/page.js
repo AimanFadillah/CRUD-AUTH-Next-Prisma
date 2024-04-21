@@ -1,21 +1,16 @@
 "use client"
 
-import { PrismaClient } from "@prisma/client"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 
 export default function Page() {
-    const prisma = new PrismaClient();
     const router = useRouter()
 
     return <div className="container mt-5">
         <div className="row justify-content-center">
             <div className="col-8">
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                     e.preventDefault()
-                    const formData = new FormData(e.target);
-                    prisma.barang.create({data:{
-                        nama:formData.get("nama")
-                    }})
+                    await fetch("/api/barang",{method:"POST",body:new FormData(e.target)})
                     router.push("/")
                 }} className="border rounded p-3">
                     <h1 className="text-center" >Buat Barang</h1>
