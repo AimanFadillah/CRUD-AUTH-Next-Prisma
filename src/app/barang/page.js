@@ -1,14 +1,17 @@
-"use client"
+import { permanentRedirect } from "next/navigation"
+import { PrismaClient } from "@prisma/client"
 
-import { redirect, useRouter } from "next/navigation"
-
-export default function Page() {
+export default async function Page() {
     return <div className="container mt-5">
         <div className="row justify-content-center">
             <div className="col-8">
                 <form action={async (formData) => {
-                    await fetch("/api/barang",{method:"POST",body:formData})
-                    redirect("/")
+                    "use server"
+                    const prisma = new PrismaClient();
+                    await prisma.barang.create({data:{
+                        nama:formData.get("nama")
+                    }})
+                    permanentRedirect("/")
                 }} className="border rounded p-3">
                     <h1 className="text-center" >Buat Barang</h1>
                     <div className="mt-4" >

@@ -1,22 +1,10 @@
-"use client"
+import { PrismaClient } from "@prisma/client"
+import Link from "next/link";
+import { permanentRedirect } from "next/navigation";
 
-import { useCallback, useEffect, useState } from "react"
-import Link from "next/link"
-
-export default function Page () {
-  const [barangs,setBarangs] = useState([]);
-    
-  useEffect(() => {
-      getBarangs();
-  },[])
-
-  const getBarangs = useCallback(async () => {
-      const response = await fetch("/api/barang");
-      const data = await response.json();
-      setBarangs(data);
-      return data;
-  },[]);
-
+export default async function Page () {
+  const prisma = new PrismaClient();
+  const barangs = await prisma.barang.findMany();
   return <div className="container">
     <div className="row" >
       <div className="col-6">
@@ -47,14 +35,14 @@ export default function Page () {
                   <td>{barang.nama}</td>
                   <td>
                     <Link href={`/barang/${barang.id}`} className="btn btn-primary me-2" >Edit</Link>
-                    <button onClick={async () => {
-                      if(confirm("Yakin?")){
-                        const response = await fetch(`/api/barang/${barang.id}`,{
-                          method:"DELETE"
-                        })
-                        getBarangs()
-                      }
-                    }} className="btn btn-danger" >Delete</button>
+                    <form  className="d-inline" action={async () => {
+                        "use server"
+                        const prisma = new PrismaClient();
+                        await prisma.barang.delete({where:{id:barang.id}});
+                        permanentRedirect("/")
+                      }} >
+                      <button className="btn btn-danger" >Delete</button>
+                    </form>
                   </td>
                 </tr>
               )}
