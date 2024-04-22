@@ -1,3 +1,3 @@
 export function GET (request) {
-    return Response.json({msg:"success"})
+    return Response.json({msg:"success"});
 }
