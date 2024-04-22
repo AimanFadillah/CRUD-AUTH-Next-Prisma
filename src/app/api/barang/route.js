@@ -1,7 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { redirect } from 'next/navigation'
 
 const prisma = new PrismaClient();
+
+export async function GET (request) {
+    const data = await prisma.barang.findMany();
+    return Response.json(data);
+}
 
 export async function POST (request) {
     const data = {};

@@ -1,9 +1,21 @@
-import { PrismaClient } from "@prisma/client"
+"use client"
+
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 
-export default async function Page () {
-  const prisma = new PrismaClient()
-  const barangs = await prisma.barang.findMany()
+export default function Page () {
+  const [barangs,setBarangs] = useState([]);
+    
+  useEffect(() => {
+      getBarangs();
+  },[])
+
+  const getBarangs = useCallback(async () => {
+      const response = await fetch("/api/barang");
+      const data = await response.json();
+      setBarangs(data);
+      return data;
+  },[]);
 
   return <div className="container">
     <div className="row" >
@@ -25,13 +37,25 @@ export default async function Page () {
               <tr>
                 <th>#</th>
                 <th>Nama</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {barangs.map((barang,index) => 
-                <tr>
+                <tr key={index} >
                   <th>{index + 1}</th>
                   <td>{barang.nama}</td>
+                  <td>
+                    <Link href={`/barang/${barang.id}`} className="btn btn-primary me-2" >Edit</Link>
+                    <button onClick={async () => {
+                      if(confirm("Yakin?")){
+                        const response = await fetch(`/api/barang/${barang.id}`,{
+                          method:"DELETE"
+                        })
+                        getBarangs()
+                      }
+                    }} className="btn btn-danger" >Delete</button>
+                  </td>
                 </tr>
               )}
             </tbody>
