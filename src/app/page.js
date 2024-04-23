@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Page () {
   const prisma = new PrismaClient();
@@ -29,23 +30,28 @@ export default async function Page () {
               </tr>
             </thead>
             <tbody>
-              {barangs.map((barang,index) => 
-                <tr key={index} >
-                  <th>{index + 1}</th>
-                  <td>{barang.nama}</td>
-                  <td>
-                    <Link href={`/barang/${barang.id}`} className="btn btn-primary me-2" >Edit</Link>
-                    <form  className="d-inline" action={async () => {
-                        "use server"
-                        const prisma = new PrismaClient();
-                        await prisma.barang.delete({where:{id:barang.id}});
-                        permanentRedirect("/")
-                      }} >
-                      <button className="btn btn-danger" >Delete</button>
-                    </form>
-                  </td>
-                </tr>
-              )}
+              <Suspense fallback={<tr>
+                <td colspan="3">Loading</td>
+              </tr>} >
+                {barangs.map((barang,index) => 
+                  <tr key={index} >
+                    <th>{index + 1}</th>
+                    <td>{barang.nama}</td>
+                    <td>
+                      <Link href={`/barang/${barang.id}`} className="btn btn-primary me-2" >Edit</Link>
+                      <form  className="d-inline" action={async () => {
+                          "use server"
+                          const prisma = new PrismaClient();
+                          await prisma.barang.delete({where:{id:barang.id}});
+                          permanentRedirect("/")
+                        }} >
+                        <button className="btn btn-danger" >Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                )}
+              </Suspense>
+             
             </tbody>
           </table>
         </div>
