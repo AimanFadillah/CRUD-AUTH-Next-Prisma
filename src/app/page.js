@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
+import ButtonForm from "./component/ButtonForm";
 
 export default async function Page () {
   const prisma = new PrismaClient();
@@ -45,7 +46,7 @@ export default async function Page () {
                           await prisma.barang.delete({where:{id:barang.id}});
                           permanentRedirect("/")
                         }} >
-                        <button className="btn btn-danger" >Delete</button>
+                          <ButtonForm className="btn btn-danger" text="Delete" />
                       </form>
                     </td>
                   </tr>

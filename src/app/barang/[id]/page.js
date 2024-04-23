@@ -1,3 +1,4 @@
+import ButtonForm from "@/app/component/ButtonForm";
 import { PrismaClient } from "@prisma/client";
 import { permanentRedirect } from "next/navigation";
 
@@ -21,7 +22,7 @@ export default async function Page({params}) {
                         <label className="form-label" >Nama Barang</label>
                         <input name="nama" defaultValue={barang.nama} className="form-control" placeholder="Jeruk" required={true} />
                     </div>
-                    <button className="btn btn-success mt-3 w-100" >Tambah</button>
+                    <ButtonForm text={"Update"} />
                 </form>
             </div>
         </div>
