@@ -32,7 +32,7 @@ export default async function Page () {
             </thead>
             <tbody>
               <Suspense fallback={<tr>
-                <td colspan="3">Loading</td>
+                <td colSpan="3">Loading</td>
               </tr>} >
                 {barangs.map((barang,index) => 
                   <tr key={index} >
