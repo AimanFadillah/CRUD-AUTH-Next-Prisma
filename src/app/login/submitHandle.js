@@ -3,6 +3,8 @@
 import { PrismaClient } from "@prisma/client";
 import { permanentRedirect } from "next/navigation";
 import { z } from "zod"
+import { createSession } from "../session";
+import bcrypt from "bcrypt";
 
 const validate = z.object({
     email:z.string().email({message:"Email tidak valid"}),
@@ -21,5 +23,18 @@ export default async function SubmitHandle (state,formData) {
         return {errors:validateData.error.flatten().fieldErrors}
     }
 
-    permanentRedirect("/")
+    const prisma = new PrismaClient()
+    const user = await prisma.user.findFirst({where:{email:data.email}});
+
+    if(user && bcrypt.compareSync(data.password,user.password)){
+        delete user.password
+        await createSession(user);
+        return permanentRedirect("/")
+    }
+
+    return {errors:{
+            email:"  ",
+            password:"Email atau password salah"
+        }
+    }
 }

@@ -3,17 +3,18 @@ import { SignJWT,jwtVerify } from "jose"
 import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;
+const encodeKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt (payload) {
     return new SignJWT(payload)
         .setProtectedHeader({alg:"HS256"})
         .setIssuedAt()
         .setExpirationTime("7d")
-        .sign(secretKey)
+        .sign(encodeKey)
 }
 
 export async function decrypt (session) {
-    const {payload} = await jwtVerify(session,secretKey,{
+    const {payload} = await jwtVerify(session,encodeKey,{
         algorithms:["HS256"]
     })
     return payload
@@ -32,6 +33,6 @@ export async function createSession (data) {
     })
 }
 
-export function deleteSession (){
+export async function deleteSession (){
     cookies().delete("session")
 }

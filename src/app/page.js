@@ -3,20 +3,32 @@ import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 import ButtonForm from "./component/ButtonForm";
+import { decrypt, deleteSession } from "./session";
+import { cookies } from "next/headers";
 
 export default async function Page () {
+  const user = (await decrypt(cookies().get("session")?.value)).data;
   const prisma = new PrismaClient();
   const barangs = await prisma.barang.findMany();
   return <div className="container">
     <div className="row" >
       <div className="col-6">
         <div>
-          <h1 className="my-3" >Kumpulan Barang</h1>
+          <h1 className="my-3" >User: {user.nama}</h1>
         </div>
       </div>
       <div className="col-6 d-flex align-items-center justify-content-end">
         <div>
           <Link href={"/barang"} className="btn btn-success" >Buat Barang</Link>
+        </div>
+        <div>
+          <form action={async () => {
+            "use server"
+            await deleteSession()
+            permanentRedirect("/")
+          }} >
+            <button className="btn btn-danger ms-1" >Logout</button>
+          </form>
         </div>
       </div>
       <div className="col-12" >
