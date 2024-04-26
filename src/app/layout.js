@@ -17,7 +17,7 @@ export default function RootLayout({ children  }) {
       <head>
         <title>Website</title>
       </head>
-      <body className={poppins.className}>
+      <body data-bs-theme="dark" className={poppins.className}>
           {children}
       </body>
     </html>
