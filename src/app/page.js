@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import ButtonForm from "./component/ButtonForm";
 import { decrypt, deleteSession } from "./session";
 import { cookies } from "next/headers";
+import { unlinkSync } from "fs";
 
 export default async function Page () {
   const user = (await decrypt(cookies().get("session")?.value)).data;
@@ -57,6 +58,7 @@ export default async function Page () {
                       <form  className="d-inline" action={async () => {
                           "use server"
                           const prisma = new PrismaClient();
+                          await unlinkSync(`./public/images/${barang.foto}`)
                           await prisma.barang.delete({where:{id:barang.id}});
                           permanentRedirect("/")
                         }} >
