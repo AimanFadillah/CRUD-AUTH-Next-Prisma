@@ -13,6 +13,7 @@ datasource db {
 model Barang {
   id String @id @default(uuid())
   nama String
+  foto String
 }
 
 model User { 
