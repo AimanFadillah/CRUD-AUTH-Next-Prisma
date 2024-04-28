@@ -38,6 +38,7 @@ export default async function Page () {
             <thead>
               <tr>
                 <th>#</th>
+                <th>Foto</th>
                 <th>Nama</th>
                 <th>Action</th>
               </tr>
@@ -49,6 +50,7 @@ export default async function Page () {
                 {barangs.map((barang,index) => 
                   <tr key={index} >
                     <th>{index + 1}</th>
+                    <td><img src={`/images/${barang.foto}`} alt={barang.nama} className="img-fluid" width={100} /></td>
                     <td>{barang.nama}</td>
                     <td>
                       <Link href={`/barang/${barang.id}`} className="btn btn-primary me-2" >Edit</Link>

@@ -20,7 +20,16 @@ export default function Page() {
                         <input name="nama" className={`form-control ${!state.errors.nama || "is-invalid"}`} placeholder="Jeruk" />
                         {!state.errors.nama ||
                         <div className="invalid-feedback" >
-                            {state.errors.nama}
+                            {state.errors.nama[0]}
+                        </div>
+                        }
+                    </div>
+                    <div className="mt-4" >
+                        <label className="form-label" >Foto Barang</label>
+                        <input type="file" name="foto" className={`form-control ${!state.errors.foto || "is-invalid"}`} />
+                        {!state.errors.foto ||
+                        <div className="invalid-feedback" >
+                            {state.errors.foto[0]}
                         </div>
                         }
                     </div>
