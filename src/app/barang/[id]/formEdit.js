@@ -17,6 +17,15 @@ export default function FormEdit ({barang}) {
             {state.errors.nama}
         </div>
         }
+        <div className="mt-4" >
+            <label className="form-label" >Foto Barang</label>
+            <input type="file" name="foto" className={`form-control ${!state.errors.foto || "is-invalid"}`} />
+            {!state.errors.foto ||
+            <div className="invalid-feedback" >
+                {state.errors.foto}
+            </div>
+            }
+        </div>
     </div>
     <ButtonForm text={"Update"} />
 </form>
