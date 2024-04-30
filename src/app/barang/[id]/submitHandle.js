@@ -16,22 +16,32 @@ const validateImage = z.any().refine(validateTypeImage,{message:"Tipe foto tidak
 
 export default async function submitHandle ({id},formData) {
     const prisma = new PrismaClient();
+    const foto = formData.get("foto")
     const data = {
         nama:formData.get("nama"),
     }
 
     const validateData = validate.safeParse(data);
 
-    if(!validateData.success){
-        return {errors:validateData.error.flatten().fieldErrors,id}
+    const result = {
+        success:validateData.success,
+        errors:!validateData.success ? validateData.error.flatten().fieldErrors : {},
+        id,
     }
 
-    if(formData.get("foto").size != 0){
-        const foto = formData.get("foto")
+    if(foto.size != 0){
         const validateDataImage = validateImage.safeParse(foto);
         if(!validateDataImage.success){
-            return {errors:{foto:validateDataImage.error.errors[0].message},id}
+            result.errors.foto = validateDataImage.error.errors[0].message
+            result.success = false
         }
+    }
+
+    if(!result.success){
+        return result;
+    }
+
+    if(foto.size != 0){
         const afterFoto = await prisma.barang.findFirst({where:{id}})
         unlinkSync(`./public/images/${afterFoto.foto}`)
         const namaFoto = `${Date.now()}${((Math.random() * 1e9).toString()).replace(".","")}${path.extname(foto.name)}`
