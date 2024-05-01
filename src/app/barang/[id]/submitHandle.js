@@ -46,7 +46,7 @@ export default async function submitHandle ({id},formData) {
         unlinkSync(`./public/images/${afterFoto.foto}`)
         const namaFoto = `${Date.now()}${((Math.random() * 1e9).toString()).replace(".","")}${path.extname(foto.name)}`
         const bufferFoto = Buffer.from(await foto.arrayBuffer())
-        await writeFile(`./public/images/${namaFoto}`,bufferFoto)
+        await writeFile(`c:/project/learn-next/public/images/${namaFoto}`,bufferFoto)
         data.foto = namaFoto;
     }
 

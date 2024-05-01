@@ -17,7 +17,6 @@ const routePublic = [
 
 export function middleware(request) {
   const session = cookies().get("session")?.value
-  console.log(request.nextUrl.pathname)
 
   if(!session && routeProtected.includes(request.nextUrl.pathname) || !session && request.nextUrl.pathname.includes(routeDynamicProtected)){ // dynamic route
     return NextResponse.redirect(new URL("/login", request.url))

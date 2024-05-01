@@ -27,7 +27,7 @@ export default async function submitHandle (state,formData) {
     
     const namaFoto = `${Date.now()}${((Math.random() * 1e9).toString()).replace(".","")}${path.extname(data.foto.name)}`
     const bufferFoto = Buffer.from(await data.foto.arrayBuffer())
-    await writeFile(`./public/images/${namaFoto}`,bufferFoto)
+    await writeFile(`c:/project/learn-next/public/images/${namaFoto}`,bufferFoto)
 
     const prisma = new PrismaClient();
     data.foto = namaFoto;
